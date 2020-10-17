@@ -1,4 +1,5 @@
-var Messages = {
-
+Messages = {
+  storage: [],
+  size: 0
 
 };

@@ -1,15 +1,16 @@
 var FormView = {
-
+//define a jquery node $form
   $form: $('form'),
 
   initialize: function() {
+    //
     FormView.$form.on('submit', FormView.handleSubmit);
   },
 
   handleSubmit: function(event) {
     // Stop the browser from submitting the form
     event.preventDefault();
-    
+
     console.log('click!');
   },
 
