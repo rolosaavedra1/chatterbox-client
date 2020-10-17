@@ -2,20 +2,19 @@ var FormView = {
   //define a jquery node $form
   $form: $('form'),
   $room: $('#rooms'),
-  //*************** ADDING CODE HERE
   $newroombutton: $('#addroom'),
   $select: $('#rooms select'),
+  //Returns value of the room that is currently selected
+  currentRoom: function () {
+    return $('#rooms select')[0].value;
+  },
 
   initialize: function () {
     FormView.$form.on('submit', FormView.handleSubmit);
     FormView.$newroombutton.on('submit', FormView.addNewRoom);
-    /*
-    FormView.$newroombutton.on('change', App.loadMessages.bind(null, Messages.storage, FormView.$room.children()[0].value));
-    */
   },
 
   handleSubmit: function (event) {
-
     //HELPER FUNCTION: ID string generator
     var randomString = function randomString(length, chars) {
       var result = '';
@@ -29,6 +28,7 @@ var FormView = {
     event.preventDefault();
     // Store the current room we are in when the user clicks Submit
     var currentRoom = FormView.$room.children()[0].value;
+    console.log(currentRoom);
     // Store the current message object in a variable when the user clicks Submit
     var $messageObj = $('form').children('#message');
     // Construct the message Object to pass to parse

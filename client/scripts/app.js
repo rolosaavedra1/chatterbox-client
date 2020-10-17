@@ -5,6 +5,14 @@ var App = {
 
   username: 'anonymous',
   //Adding a Jquery object variable
+  getCurrentData: function () {
+    Parse.readAll((data) => {
+      return data;
+    });
+  },
+
+  //Testing to find current room
+  //currentRoom : FormView.$room.children()[0].value,
 
   initialize: function () {
     App.username = window.location.search.substr(10);
@@ -19,7 +27,9 @@ var App = {
     App.fetch(App.stopSpinner);
     App.fetch(App.loadMessages);
     //App.fetch(App.updater);
-
+    //During initializing, store 'previousRoom'
+    App.previousRoom = FormView.currentRoom();
+    App.updater();
   },
 
   fetch: function (callback = () => { }) {
@@ -42,8 +52,11 @@ var App = {
 
   loadMessages: function (data, roomSelection) {
     //create messages object, populate it with server data
-    Messages.storage = data.results;
-
+    if (Array.isArray(data)) {
+      Messages.storage = data;
+    } else {
+      Messages.storage = data.results;
+    }
     //Change messages so that it only contains messages with 'room' property that matches roomselection
 
     //HELPER FUNCTION
@@ -58,10 +71,10 @@ var App = {
     };
 
     if (roomSelection) {
-      /* var filteredMessages = filterMessagesByRoom(roomSelection);
-       MessagesView.initialize(filteredMessages);
-       RoomsView.initialize(filteredMessages);
-       */
+      var filteredMessages = filterMessagesByRoom(roomSelection);
+      $('#chats').empty();
+      MessagesView.initialize(filteredMessages);
+      RoomsView.initialize(filteredMessages);
     } else {
       MessagesView.initialize(Messages.storage);
       RoomsView.initialize(Messages.storage);
@@ -69,24 +82,20 @@ var App = {
   },
 
   //define an "updater function"
-  updater: function (data) {
-    /*
-    setTimeout(function () {
-      var messagesToAdd = [];
-      for (var i = 0; i < data.results.length; i++) {
-        var currentMessage = data.results[i];
-        if (Date.parse(currentMessage.createdAt) > Messages.lastDate) {
-          messagesToAdd.push(currentMessage);
-        }
+  updater: function () {
+  //Set timeout (triggered during initializing)
+    return setTimeout( () => {
+      //if currentRoom() !== to 'previousROom'
+      if (FormView.currentRoom() !== App.previousRoom) {
+        //Remove or hide all current messages
+        //trigger the process to render all messages using the currentRoom parameter
+        App.loadMessages(Messages.storage, FormView.currentRoom());
+        //change the value of previous room to currentRoom
+        App.previousRoom = FormView.currentRoom();
       }
-      MessagesView.initialize(messagesToAdd);
+      return App.updater();
     }, 3000);
-    //run it using a set timeout for N seconds
-    */
+  //call Set Timeout again
   }
-  //have set timeout call itself again (to recursively call it every N seconds)
-  //Use Parse.readAll to get all messages
-  //Check date of the last message added to DOM
-  //Only grab messages with date AFTER that date
-  //Pass that array to the MessagesView.initialize (which should add them all to the DOM?)
+
 };
