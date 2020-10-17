@@ -1,5 +1,6 @@
 Messages = {
   storage: [],
-  size: 0
+  size: 0,
+  lastDate: null
 
 };

@@ -28,9 +28,16 @@
       <div id="rooms">
         Room:
         <select></select>
-        <button>Add Room</button>
+        <!--  -->
+        <form action="#" id="addroom" method="post">
+          <label for="newroombutton">Add a New Room:</label>
+          <input type="text" name="message" id="newroom"/>
+          <input type="submit" name="Add Room" class="newroombutton"/>
+        </form>
+        <!-- <button>Add Room</button> -->
       </div>
       <form action="#" id="send" method="post">
+        <!-- <label for="message">Post a New Message</label> -->
         <input type="text" name="message" id="message"/>
         <input type="submit" name="submit" class="submit"/>
       </form>

@@ -6,10 +6,4 @@ var MessageView = {
         <div> <%- text %> </div>
       </div>
     `)
-
-/*
-  var compiled = _.template("hello: <%- name %>");
-  compiled({name: 'moe'});
-  => "hello: moe"
-*/
 };
